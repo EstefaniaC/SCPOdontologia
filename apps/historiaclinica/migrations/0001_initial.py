@@ -1,0 +1,81 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('paciente', '0006_auto_20160715_1230'),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='HistoriaClinica',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('tratamiento_medico', models.BooleanField(default=True)),
+                ('medicamento_actual', models.BooleanField(default=True)),
+                ('intervencion_quirurgica', models.BooleanField(default=True)),
+                ('recibido_transfusion_sanguinea', models.BooleanField(default=True)),
+                ('consume_droga', models.BooleanField(default=True)),
+                ('consume_alcohol', models.BooleanField(default=True)),
+                ('dolor_intenso_cabeza', models.BooleanField(default=True)),
+                ('alergia_piel', models.BooleanField(default=True)),
+                ('sangrado_excesivo', models.BooleanField(default=True)),
+                ('penicilina', models.BooleanField(default=True)),
+                ('anestesia', models.BooleanField(default=True)),
+                ('aspirina', models.BooleanField(default=True)),
+                ('merthiolate', models.BooleanField(default=True)),
+                ('arterial_alta', models.BooleanField(default=True)),
+                ('arterial_baja', models.BooleanField(default=True)),
+                ('anemia', models.BooleanField(default=True)),
+                ('diabetes', models.BooleanField(default=True)),
+                ('problemas_corazon', models.BooleanField(default=True)),
+                ('fiebre_reumatica', models.BooleanField(default=True)),
+                ('epilepsia', models.BooleanField(default=True)),
+                ('artritis', models.BooleanField(default=True)),
+                ('hepatitis', models.BooleanField(default=True)),
+                ('asma', models.BooleanField(default=True)),
+                ('ulcera_gastrica', models.BooleanField(default=True)),
+                ('tiroides', models.BooleanField(default=True)),
+                ('leucemia', models.BooleanField(default=True)),
+                ('hemofilia', models.BooleanField(default=True)),
+                ('deficit', models.BooleanField(default=True)),
+                ('vih', models.BooleanField(default=True)),
+                ('retroviral', models.BooleanField(default=True)),
+                ('embarazada', models.BooleanField(default=True)),
+                ('pastillas_anticonceptivas', models.BooleanField(default=True)),
+                ('limitacion_abrir_cerrar_boca', models.BooleanField(default=True)),
+                ('ruido_abrir_cerrar_boca', models.BooleanField(default=True)),
+                ('herper_aftas', models.BooleanField(default=True)),
+                ('moder_unas', models.BooleanField(default=True)),
+                ('consume_citricos', models.BooleanField(default=True)),
+                ('fuma', models.BooleanField(default=True)),
+                ('muerde_objetos', models.BooleanField(default=True)),
+                ('apretamiento_dentario', models.BooleanField(default=True)),
+                ('respiracion_bucal', models.BooleanField(default=True)),
+                ('sensibilidad_liquido_frio', models.BooleanField(default=True)),
+                ('sensibilidad_liquido_caliente', models.BooleanField(default=True)),
+                ('mismo_problema', models.BooleanField(default=True)),
+                ('ultima_consulta', models.CharField(max_length=30, null=True, blank=True)),
+                ('ultima_radiografia', models.CharField(max_length=30, null=True, blank=True)),
+                ('obturacion', models.BooleanField(default=True)),
+                ('endodoncia', models.BooleanField(default=True)),
+                ('extraccion', models.BooleanField(default=True)),
+                ('puente', models.BooleanField(default=True)),
+                ('corona', models.BooleanField(default=True)),
+                ('dentadura', models.BooleanField(default=True)),
+                ('implante', models.BooleanField(default=True)),
+                ('instruccion_higiene', models.BooleanField(default=True)),
+                ('instruccion_evitar_carie', models.BooleanField(default=True)),
+                ('instruccion_cuidar_encia', models.BooleanField(default=True)),
+                ('diente_flojo', models.BooleanField(default=True)),
+                ('diente_largo', models.BooleanField(default=True)),
+                ('cepillado_dental', models.BooleanField(default=True)),
+                ('activo', models.BooleanField(default=True)),
+                ('paciente', models.ForeignKey(to='paciente.Paciente')),
+            ],
+        ),
+    ]

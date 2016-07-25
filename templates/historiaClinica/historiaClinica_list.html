@@ -1,0 +1,92 @@
+{% extends "base/base.html" %}
+{% block extrastatic %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/datatables/jquery.dataTables.min.css' %}">
+
+{% endblock %}
+{% block pageheader %}
+    Historia Clínica del Paciente
+{% endblock %}
+{% block subpageheader %}
+    Listar
+{% endblock %}
+{% block breadcrumbs %}
+                            <div class="col-sm-5 text-right hidden-xs">
+                                <ol class="breadcrumb push-10-t">
+                                    <li><a class="link-effect" href="{% url 'administrador:inicio' %}">Inicio</a></li>
+                                    <li><a class="link-effect" href="">Historia Clínica del Paciente</a></li>
+
+                                </ol>
+                            </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <!--Modal Eliminar-->
+        <div style="display: none; margin-top: 220px;" class="modal fade" id="modal_eliminar" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-top">
+                <div class="modal-content">
+                    <div class="block block-themed block-transparent remove-margin-b">
+                        <div class="block-header bg-primary-dark">
+                            <h3 class="block-title">Eliminar Historia Clínica del Paciente</h3>
+                        </div>
+                        <div class="block-content">
+                            <span id="modal_mensaje_name"></span><span id="modal_name"></span>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="modal_idTratamiento" name="paciente_id">
+                            <button class="btn btn-sm btn-danger eliminar" type="button">Eliminar</button>
+                            <button id="modal_boton" class="btn btn-sm btn-primary" type="button" data-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--Fin Modal Eliminar-->
+                        <div class="block-content">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <a href="{% url 'historiaClinica:crear' %}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Registrar Historia Clínca del Paciente</a>
+                                </div>
+                            </div>
+                            <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/base_tables_datatables.js -->
+                            <table class="table table-bordered table-striped js-dataTable-full" id="tabla_historiaClinica">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Paciente</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th id="tabla_acciones" class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for historiaClinica in object_list %}
+                                <tr>
+                                    <td>{{ historiaClinica.id }}</td>
+                                    <td>{{ historiaClinica.paciente.nombre }} {{ historiaClinica.paciente.apellido_paterno }} {{ historiaClinica.paciente.apellido_materno }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-center">
+                                        <a class="btn btn-primary" href="{% url 'historiaClinica:editar' historiaClinica.id %}" data-toggle="tooltip" title="Editar el historial del paciente"><i class="fa fa-pencil"></i></a>
+                                        <a class="btn btn-danger" href="{% url 'historiaClinica:eliminar' historiaClinica.id %}" data-toggle="tooltip" title="Eliminar el historial del paciente"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    <!--END Page Content -->
+{% endblock %}
+{% block extrajs %}
+    {% load staticfiles %}
+    <script src="{% static 'assets/js/csfr.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script>
+     $(document).on('ready',function(){
+        "use strict";
+
+    });
+
+    </script>
+
+{% endblock %}

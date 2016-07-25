@@ -1,0 +1,595 @@
+{% extends "base/base.html" %}
+{% block extrastatic %}
+    {% load staticfiles %}
+     <link rel="stylesheet" href="{% static 'assets/js/plugins/select2/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/select2/select2-bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/jquery-ui/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css' %}">
+{% endblock %}
+{% block pageheader %}
+Historia Clínica del Paciente
+{% endblock %}
+{% block subpageheader %}
+{% if request.get_full_path == "/historiaClinica/nuevo" %}
+Crear
+{% else %}
+Editar
+{% endif %}
+{% endblock %}
+ {% block breadcrumbs %}
+     <div class="col-sm-5 text-right hidden-xs" xmlns="http://www.w3.org/1999/html">
+                                <ol class="breadcrumb push-10-t">
+
+                                    <li><a class="link-effect" href="{% url 'administrador:inicio' %}">Inicio</a></li>
+                                    <li><a class="link-effect" href="{% url 'historiaClinica:listar' %}">Historia Clínica del Paciente</a></li>
+                                    <li><a class="link-effect" href="">
+                                       {% if request.get_full_path == "/HistoriaClinica/nueva" %}
+                                       Crear
+                                       {% else %}
+                                       Editar
+                                       {% endif %}
+                                    </a></li>
+
+                                </ol>
+                            </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <!--Modal Error-->
+        <div style="display: none; margin-top: 220px;" class="modal fade" id="modal_error" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-top">
+                <div class="modal-content">
+                    <div class="block block-themed block-transparent remove-margin-b">
+                        <div class="block-header bg-primary-dark">
+                            <h3 class="block-title">Error</h3>
+                        </div>
+                        <div class="block-content">
+                            No existe este registro.
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'historiaClinica:listar' %}" class="btn btn-sm btn-info" type="button">Aceptar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--Fin Modal Error-->
+<div class="content">
+    <form id="form_historiaClinica" class="js-validation-material form-horizontal push-10-t" method="POST">
+    {% csrf_token %}
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="block block-rounded">
+                    <div class="block-header bg-primary">
+                        <h3 class="block-title">Historia Clínica del Paciente</h3>
+                    </div>
+                    <div class="block-content">
+                        <div class="col-md-10 col-md-offset-1">
+                            
+                    <table>
+                      <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.paciente.name }}">{{ form.paciente.label }}</label>
+                            {% for error in form.paciente.errors %}
+                            <div class="help-block text-right animated fadeInDown" id="val-nombre-error">{{error}}</div>
+                            {% endfor %}
+                            <div class="col-md-12 col-sm-6 col-xs-6">
+                                {{ form.paciente }}
+                            </div>
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.tratamiento_medico.name }}">{{ form.tratamiento_medico.label }}
+                            </label>  
+                            <input name="tratamiento_medico" type="checkbox"
+                            {% if historiaclinica.tratamiento_medico != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.tratamiento_medico }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.medicamento_actual.name }}">{{ form.medicamento_actual.label }}
+                            </label>  
+                            <input name="medicamento_actual" type="checkbox"
+                            {% if historiaclinica.medicamento_actual != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.medicamento_actual }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.intervencion_quirurgica.name }}">{{ form.intervencion_quirurgica.label }}
+                            </label>  
+                            <input name="intervencion_quirurgica" type="checkbox"
+                            {% if historiaclinica.intervencion_quirurgica != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.intervencion_quirurgica }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.recibido_transfusion_sanguinea.name }}">{{ form.recibido_transfusion_sanguinea.label }}
+                            </label>  
+                            <input name="recibido_transfusion_sanguinea" type="checkbox"
+                            {% if historiaclinica.recibido_transfusion_sanguinea != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.recibido_transfusion_sanguinea }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.consume_droga.name }}">{{ form.consume_droga.label }}
+                            </label>  
+                            <input name="consume_droga" type="checkbox"
+                            {% if historiaclinica.consume_droga != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.consume_droga }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.consume_alcohol.name }}">{{ form.consume_alcohol.label }}
+                            </label>  
+                            <input name="consume_alcohol" type="checkbox"
+                            {% if historiaclinica.consume_alcohol != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.consume_alcohol }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.dolor_intenso_cabeza.name }}">{{ form.dolor_intenso_cabeza.label }}
+                            </label>  
+                            <input name="dolor_intenso_cabeza" type="checkbox"
+                            {% if historiaclinica.dolor_intenso_cabeza != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.dolor_intenso_cabeza }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.alergia_piel.name }}">{{ form.alergia_piel.label }}
+                            </label>  
+                            <input name="alergia_piel" type="checkbox"
+                            {% if historiaclinica.alergia_piel != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.alergia_piel }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.sangrado_excesivo.name }}">{{ form.sangrado_excesivo.label }}
+                            </label>  
+                            <input name="sangrado_excesivo" type="checkbox"
+                            {% if historiaclinica.sangrado_excesivo != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.sangrado_excesivo }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a>Ha presentado reacción alergica a:</a>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.penicilina.name }}">{{ form.penicilina.label }}
+                            </label>  
+                            <input name="penicilina" type="checkbox"
+                            {% if historiaclinica.penicilina != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.penicilina }}{% else %} True {% endif %}">
+                        </td>
+                        <td><a>Ha presentado reacción alergica a:</a>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.anestesia.name }}">{{ form.anestesia.label }}
+                            </label>  
+                            <input name="anestesia" type="checkbox"
+                            {% if historiaclinica.anestesia != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.anestesia }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.aspirina.name }}">{{ form.aspirina.label }}
+                            </label>  
+                            <input name="aspirina" type="checkbox"
+                            {% if historiaclinica.aspirina != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.aspirina }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.merthiolate.name }}">{{ form.merthiolate.label }}
+                            </label>  
+                            <input name="merthiolate" type="checkbox"
+                            {% if historiaclinica.merthiolate != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.merthiolate }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a>Sufre de tensión arterial:</a>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.arterial_alta.name }}">{{ form.arterial_alta.label }}
+                            </label>  
+                            <input name="arterial_alta" type="checkbox"
+                            {% if historiaclinica.arterial_alta != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.arterial_alta }}{% else %} True {% endif %}">
+                        </td>
+                        <td><a>Sufre de tensión arterial:</a>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.arterial_baja.name }}">{{ form.arterial_baja.label }}
+                            </label>  
+                            <input name="arterial_baja" type="checkbox"
+                            {% if historiaclinica.arterial_baja != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.arterial_baja }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a>Ha presentado alguno de los problemas que se citan a continuación:</a>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.anemia.name }}">{{ form.anemia.label }}
+                            </label>  
+                            <input name="anemia" type="checkbox"
+                            {% if historiaclinica.anemia != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.anemia }}{% else %} True {% endif %}">
+                        </td>
+                        <td><a>Ha presentado alguno de los problemas que se citan a continuación:</a>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.diabetes.name }}">{{ form.diabetes.label }}
+                            </label>  
+                            <input name="diabetes" type="checkbox"
+                            {% if historiaclinica.diabetes != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.diabetes }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.problemas_corazon.name }}">{{ form.problemas_corazon.label }}
+                            </label>  
+                            <input name="problemas_corazon" type="checkbox"
+                            {% if historiaclinica.problemas_corazon != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.problemas_corazon }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.fiebre_reumatica.name }}">{{ form.fiebre_reumatica.label }}
+                            </label>  
+                            <input name="fiebre_reumatica" type="checkbox"
+                            {% if historiaclinica.fiebre_reumatica != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.fiebre_reumatica }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.epilepsia.name }}">{{ form.epilepsia.label }}
+                            </label>  
+                            <input name="epilepsia" type="checkbox"
+                            {% if historiaclinica.epilepsia != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.epilepsia }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.artritis.name }}">{{ form.artritis.label }}
+                            </label>  
+                            <input name="artritis" type="checkbox"
+                            {% if historiaclinica.artritis != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.artritis }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.hepatitis.name }}">{{ form.hepatitis.label }}
+                            </label>  
+                            <input name="hepatitis" type="checkbox"
+                            {% if historiaclinica.hepatitis != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.hepatitis }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.asma.name }}">{{ form.asma.label }}
+                            </label>  
+                            <input name="asma" type="checkbox"
+                            {% if historiaclinica.asma != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.asma }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.ulcera_gastrica.name }}">{{ form.ulcera_gastrica.label }}
+                            </label>  
+                            <input name="ulcera_gastrica" type="checkbox"
+                            {% if historiaclinica.ulcera_gastrica != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.ulcera_gastrica }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.tiroides.name }}">{{ form.tiroides.label }}
+                            </label>  
+                            <input name="tiroides" type="checkbox"
+                            {% if historiaclinica.tiroides != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.tiroides }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.leucemia.name }}">{{ form.leucemia.label }}
+                            </label>  
+                            <input name="leucemia" type="checkbox"
+                            {% if historiaclinica.leucemia != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.leucemia }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.hemofilia.name }}">{{ form.hemofilia.label }}
+                            </label>  
+                            <input name="hemofilia" type="checkbox"
+                            {% if historiaclinica.hemofilia != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.hemofilia }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.deficit.name }}">{{ form.deficit.label }}
+                            </label>  
+                            <input name="deficit" type="checkbox"
+                            {% if historiaclinica.deficit != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.deficit }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.vih.name }}">{{ form.vih.label }}
+                            </label>  
+                            <input name="vih" type="checkbox"
+                            {% if historiaclinica.vih != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.vih }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.retroviral.name }}">{{ form.retroviral.label }}
+                            </label>  
+                            <input name="retroviral" type="checkbox"
+                            {% if historiaclinica.retroviral != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.retroviral }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.embarazada.name }}">{{ form.embarazada.label }}
+                            </label>  
+                            <input name="embarazada" type="checkbox"
+                            {% if historiaclinica.embarazada != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.embarazada }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.pastillas_anticonceptivas.name }}">{{ form.pastillas_anticonceptivas.label }}
+                            </label>  
+                            <input name="pastillas_anticonceptivas" type="checkbox"
+                            {% if historiaclinica.pastillas_anticonceptivas != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.pastillas_anticonceptivas }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.limitacion_abrir_cerrar_boca.name }}">{{ form.limitacion_abrir_cerrar_boca.label }}
+                            </label>  
+                            <input name="limitacion_abrir_cerrar_boca" type="checkbox"
+                            {% if historiaclinica.limitacion_abrir_cerrar_boca != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.limitacion_abrir_cerrar_boca }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>    
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.ruido_abrir_cerrar_boca.name }}">{{ form.ruido_abrir_cerrar_boca.label }}
+                            </label>  
+                            <input name="ruido_abrir_cerrar_boca" type="checkbox"
+                            {% if historiaclinica.ruido_abrir_cerrar_boca != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.ruido_abrir_cerrar_boca }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.herper_aftas.name }}">{{ form.herper_aftas.label }}
+                            </label>  
+                            <input name="herper_aftas" type="checkbox"
+                            {% if historiaclinica.herper_aftas != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.herper_aftas }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a>Presenta algunos de los siguientes hábitos:</a>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.moder_unas.name }}">{{ form.moder_unas.label }}
+                            </label>  
+                            <input name="moder_unas" type="checkbox"
+                            {% if historiaclinica.moder_unas != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.moder_unas }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.consume_citricos.name }}">{{ form.consume_citricos.label }}
+                            </label>  
+                            <input name="consume_citricos" type="checkbox"
+                            {% if historiaclinica.consume_citricos != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.consume_citricos }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.fuma.name }}">{{ form.fuma.label }}
+                            </label>  
+                            <input name="fuma" type="checkbox"
+                            {% if historiaclinica.fuma != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.fuma }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.muerde_objetos.name }}">{{ form.muerde_objetos.label }}
+                            </label>  
+                            <input name="muerde_objetos" type="checkbox"
+                            {% if historiaclinica.muerde_objetos != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.muerde_objetos }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.apretamiento_dentario.name }}">{{ form.apretamiento_dentario.label }}
+                            </label>  
+                            <input name="apretamiento_dentario" type="checkbox"
+                            {% if historiaclinica.apretamiento_dentario != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.apretamiento_dentario }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.respiracion_bucal.name }}">{{ form.respiracion_bucal.label }}
+                            </label>  
+                            <input name="respiracion_bucal" type="checkbox"
+                            {% if historiaclinica.respiracion_bucal != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.respiracion_bucal }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.sensibilidad_liquido_frio.name }}">{{ form.sensibilidad_liquido_frio.label }}
+                            </label>  
+                            <input name="sensibilidad_liquido_frio" type="checkbox"
+                            {% if historiaclinica.sensibilidad_liquido_frio != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.sensibilidad_liquido_frio }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.sensibilidad_liquido_caliente.name }}">{{ form.sensibilidad_liquido_caliente.label }}
+                            </label>  
+                            <input name="sensibilidad_liquido_caliente" type="checkbox"
+                            {% if historiaclinica.sensibilidad_liquido_caliente != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.sensibilidad_liquido_caliente }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a>Su principal problema es:</a>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.mismo_problema.name }}">{{ form.mismo_problema.label }}
+                            </label>  
+                            <input name="mismo_problema" type="checkbox"
+                            {% if historiaclinica.mismo_problema != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.mismo_problema }}{% else %} True {% endif %}">
+                          
+                        </td>
+                        <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.ultima_consulta }}
+                                <label  for="{{ form.ultima_consulta.name }}">{{ form.ultima_consulta.label }}
+                                </label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.ultima_radiografia }}
+                                <label  for="{{ form.ultima_radiografia.name }}">{{ form.ultima_radiografia.label }}
+                                </label>
+                                </div>
+                            </div>
+                        </td>
+                        <td><a>¿Qué tratamiento le hicieron?</a>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.obturacion.name }}">{{ form.obturacion.label }}
+                            </label>  
+                            <input name="obturacion" type="checkbox"
+                            {% if historiaclinica.obturacion != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.obturacion }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.endodoncia.name }}">{{ form.endodoncia.label }}
+                            </label>  
+                            <input name="endodoncia" type="checkbox"
+                            {% if historiaclinica.endodoncia != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.endodoncia }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.extraccion.name }}">{{ form.extraccion.label }}
+                            </label>  
+                            <input name="extraccion" type="checkbox"
+                            {% if historiaclinica.extraccion != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.extraccion }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.puente.name }}">{{ form.puente.label }}
+                            </label>  
+                            <input name="puente" type="checkbox"
+                            {% if historiaclinica.puente != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.puente }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.corona.name }}">{{ form.corona.label }}
+                            </label>  
+                            <input name="corona" type="checkbox"
+                            {% if historiaclinica.corona != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.corona }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.dentadura.name }}">{{ form.dentadura.label }}
+                            </label>  
+                            <input name="dentadura" type="checkbox"
+                            {% if historiaclinica.dentadura != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.dentadura }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.implante.name }}">{{ form.implante.label }}
+                            </label>  
+                            <input name="implante" type="checkbox"
+                            {% if historiaclinica.implante != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.implante }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.instruccion_higiene.name }}">{{ form.instruccion_higiene.label }}
+                            </label>  
+                            <input name="instruccion_higiene" type="checkbox"
+                            {% if historiaclinica.instruccion_higiene != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.instruccion_higiene }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.instruccion_evitar_carie.name }}">{{ form.instruccion_evitar_carie.label }}
+                            </label>  
+                            <input name="instruccion_evitar_carie" type="checkbox"
+                            {% if historiaclinica.instruccion_evitar_carie != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.instruccion_evitar_carie }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.instruccion_cuidar_encia.name }}">{{ form.instruccion_cuidar_encia.label }}
+                            </label>  
+                            <input name="instruccion_cuidar_encia" type="checkbox"
+                            {% if historiaclinica.instruccion_cuidar_encia != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.instruccion_cuidar_encia }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.diente_flojo.name }}">{{ form.diente_flojo.label }}
+                            </label>  
+                            <input name="diente_flojo" type="checkbox"
+                            {% if historiaclinica.diente_flojo != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.diente_flojo }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.diente_largo.name }}">{{ form.diente_largo.label }}
+                            </label>  
+                            <input name="diente_largo" type="checkbox"
+                            {% if historiaclinica.diente_largo != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.diente_largo }}{% else %} True {% endif %}">
+                        </td>
+                        <td>
+                            <label class="col-md-12 col-sm-12 col-xs-12" for="{{ form.cepillado_dental.name }}">{{ form.cepillado_dental.label }}
+                            </label>  
+                            <input name="cepillado_dental" type="checkbox"
+                            {% if historiaclinica.cepillado_dental != True %} {% else %} checked {% endif %}
+                            class="form-control" value="{% if historiaclinica %}{{ historiaclinica.cepillado_dental }}{% else %} True {% endif %}">
+                        </td>
+                    </tr>
+
+                      <tr>
+                            <td>...</td>
+                      </tr>
+                    </table>
+                    
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                     <div class="col-sm-6 col-sm-offset-3">
+                                         <input type="submit" value="Guardar" class="btn btn-primary guardar">
+                                         <a href="{% url 'historiaClinica:listar' %}" class="btn btn-danger" >Cancelar</a>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block extrajs %}
+    {% load staticfiles %}
+    <script src="{% static 'assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'assets/js/csfr.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery-validation/messages_es.min.js' %}"></script>
+    <script src="{% static 'assets/js/app.js' %}"></script>
+    <script>
+        $(function () {
+            // Init page helpers (BS Datepicker + BS Colorpicker + Select2 + Masked Input + Tags Inputs plugins)
+            App.initHelpers(['datepicker']);
+        });
+    </script>
+
+
+{% endblock %}

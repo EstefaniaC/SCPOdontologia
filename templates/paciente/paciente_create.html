@@ -1,0 +1,319 @@
+{% extends "base/base.html" %}
+{% block extrastatic %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/select2/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/select2/select2-bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/jquery-ui/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css' %}">
+{% endblock %}
+{% block pageheader %}
+Paciente
+{% endblock %}
+{% block subpageheader %}
+{% if request.get_full_path == "/paciente/nuevo" %}
+Crear
+{% else %}
+Editar
+{% endif %}
+{% endblock %}
+ {% block breadcrumbs %}
+     <div class="col-sm-5 text-right hidden-xs" xmlns="http://www.w3.org/1999/html">
+                                <ol class="breadcrumb push-10-t">
+
+                                    <li><a class="link-effect" href="{% url 'index' %}">Inicio</a></li>
+                                    <li><a class="link-effect" href="{% url 'paciente:listar' %}">Pacientes</a></li>
+                                    <li><a class="link-effect" href="">
+                                       {% if request.get_full_path == "/paciente/nuevo" %}
+                                       Crear
+                                       {% else %}
+                                       Editar
+                                       {% endif %}
+                                    </a></li>
+
+                                </ol>
+                            </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <!--Modal Error-->
+        <div style="display: none; margin-top: 220px;" class="modal fade" id="modal_error" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-top">
+                <div class="modal-content">
+                    <div class="block block-themed block-transparent remove-margin-b">
+                        <div class="block-header bg-primary-dark">
+                            <h3 class="block-title">Error</h3>
+                        </div>
+                        <div class="block-content">
+                            EL registro de paciente no existe.
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'paciente:listar' %}" class="btn btn-sm btn-info" type="button">Aceptar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--Fin Modal Error-->
+<div class="content">
+    <form id="form_paciente" class="js-validation-material form-horizontal push-10-t" method="POST">
+    {% csrf_token %}
+        <div class="row">
+            <div class="col-md-10 col-sm-offset-1">
+                <div class="block block-rounded">
+                    <div class="block-header bg-primary">
+                        <h3 class="block-title">Paciente</h3>
+                    </div>
+                    <div class="block-content">
+                        <div class="col-md-10 col-md-offset-1">
+                    <table>
+                        <tr>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.nombre }}
+                                <label  for="{{ form.nombre.name }}">{{ form.nombre.label }}
+                                </label>
+                                </div>
+                                {% for error in form.nombre.errors %}
+                                    <div class="help-block text-right animated fadeInDown" id="val-nombre-error">{{error}}</div>
+                                {% endfor %}
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.apellido_paterno }}
+                                <label  for="{{ form.apellido_paterno.name }}">{{ form.apellido_paterno.label }}
+                                </label>
+                                </div>
+                                {% for error in form.nombre.errors %}
+                                    <div class="help-block text-right animated fadeInDown" id="val-nombre-error">{{error}}</div>
+                                {% endfor %}
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.apellido_materno }}
+                                <label  for="{{ form.apellido_materno.name }}">{{ form.apellido_materno.label }}
+                                </label>
+                                </div>
+                                {% for error in form.nombre.errors %}
+                                    <div class="help-block text-right animated fadeInDown" id="val-nombre-error">{{error}}</div>
+                                {% endfor %}
+                            </div>
+                          </td>         
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.lugar_nacimiento }}
+                                <label  for="{{ form.lugar_nacimiento.name }}">{{ form.lugar_nacimiento.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.fecha_nacimiento }}
+                                <label  for="{{ form.fecha_nacimiento.name }}">{{ form.fecha_nacimiento.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.edad }}
+                                <label  for="{{ form.edad.name }}">{{ form.edad.label }}
+                                </label>
+                                </div>
+                                {% for error in form.edad.errors %}
+                                    <div class="help-block text-right animated fadeInDown" id="val-edad-error">{{error}}</div>
+                                {% endfor %}
+                            </div>
+                          </td>
+                        </tr>
+                        <tr> 
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.telefono }}
+                                <label  for="{{ form.telefono.name }}">{{ form.telefono.label }}
+                                </label>
+                                </div>
+                                {% for error in form.edad.errors %}
+                                    <div class="help-block text-right animated fadeInDown" id="val-edad-error">{{error}}</div>
+                                {% endfor %}
+                            </div>
+                          </td> 
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.celular }}
+                                <label  for="{{ form.celular.name }}">{{ form.celular.label }}
+                                </label>
+                                </div>
+                                {% for error in form.edad.errors %}
+                                    <div class="help-block text-right animated fadeInDown" id="val-edad-error">{{error}}</div>
+                                {% endfor %}
+                            </div>
+                          </td> 
+                         <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.correo_electronico }}
+                                <label  for="{{ form.correo_electronico.name }}">{{ form.correo_electronico.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.motivo_consulta }}
+                                <label  for="{{ form.motivo_consulta.name }}">{{ form.motivo_consulta.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.dolor }}
+                                <label  for="{{ form.dolor.name }}">{{ form.dolor.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.control }}
+                                <label  for="{{ form.control.name }}">{{ form.control.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.sangrado_encia }}
+                                <label  for="{{ form.sangrado_encia.name }}">{{ form.sangrado_encia.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.restauracion_protesica }}
+                                <label  for="{{ form.restauracion_protesica.name }}">{{ form.restauracion_protesica.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.enfermedad_actual }}
+                                <label  for="{{ form.enfermedad_actual.name }}">{{ form.enfermedad_actual.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                        </tr>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.direccion }}
+                                <label  for="{{ form.direccion.name }}">{{ form.direccion.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.ocupacion }}
+                                <label  for="{{ form.ocupacion.name }}">{{ form.ocupacion.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.recomendado }}
+                                <label  for="{{ form.recomendado.name }}">{{ form.recomendado.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                        <tr>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.tratamiento }}
+                                <label for="{{ form.tratamiento.name }}">{{ form.tratamiento.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class=" form-material form-material-primary">
+                                {{ form.observaciones }}
+                                <label  for="{{ form.observaciones.name }}">{{ form.observaciones.label }}
+                                </label>
+                                </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Todos los campos son obligatorios 
+                          </td>
+                        </tr>
+                      </table>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                     <div class="col-sm-6 col-sm-offset-3">
+                                         <input type="submit" value="Guardar" class="btn btn-primary guardar">
+                                         <a href="{% url 'tratamiento:listar' %}" class="btn btn-danger" >Cancelar</a>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block extrajs %}
+    {% load staticfiles %}
+    <script src="{% static 'assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery-validation/messages_es.min.js' %}"></script>
+    <script src="{% static 'assets/js/app.js' %}"></script>
+    <script>
+    $(document).on('ready',function(){
+        "use strict";
+
+    });
+
+    </script>
+
+
+
+{% endblock %}

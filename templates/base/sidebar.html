@@ -1,0 +1,170 @@
+
+{% load staticfiles %}
+<!-- Side Header -->
+<div class="side-header side-content bg-white-op">
+    <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
+    <button class="btn btn-link text-gray pull-right hidden-md hidden-lg" type="button" data-toggle="layout" data-action="sidebar_close">
+        <i class="fa fa-times"></i>
+    </button>
+    <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
+    <!--<div class="btn-group pull-right">
+        <button class="btn btn-link text-gray dropdown-toggle" data-toggle="dropdown" type="button">
+            <i class="si si-drop"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right font-s13 sidebar-mini-hide">
+            <li>
+                <a data-toggle="theme" data-theme="default" tabindex="-1" href="javascript:void(0)">
+                    <i class="fa fa-circle text-default pull-right"></i> <span class="font-w600">Default</span>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="theme" data-theme="{% static 'assets/css/themes/amethyst.min.css' %}" tabindex="-1" href="javascript:void(0)">
+                    <i class="fa fa-circle text-amethyst pull-right"></i> <span class="font-w600">Amethyst</span>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="theme" data-theme="{% static 'assets/css/themes/city.min.css' %}" tabindex="-1" href="javascript:void(0)">
+                    <i class="fa fa-circle text-city pull-right"></i> <span class="font-w600">City</span>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="theme" data-theme="{% static 'assets/css/themes/flat.min.css' %}" tabindex="-1" href="javascript:void(0)">
+                    <i class="fa fa-circle text-flat pull-right"></i> <span class="font-w600">Flat</span>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="theme" data-theme="{% static 'assets/css/themes/modern.min.css' %}" tabindex="-1" href="javascript:void(0)">
+                    <i class="fa fa-circle text-modern pull-right"></i> <span class="font-w600">Modern</span>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="theme" data-theme="{% static 'assets/css/themes/smooth.min.css' %}" tabindex="-1" href="javascript:void(0)">
+                    <i class="fa fa-circle text-smooth pull-right"></i> <span class="font-w600">Smooth</span>
+                </a>
+            </li>
+        </ul>
+    </div>-->
+
+    <a class="h5 text-white" href="#">
+        <span class="h4 font-w500 sidebar-mini-hide">Odontosite</span>
+    </a>
+</div>
+<!-- END Side Header -->
+<!-- Side Content -->
+
+<!-- sidebar menu -->
+<div class="side-content hidden-print main_menu" id="sidebar-menu" >
+    <div class="menu_section">
+        <!--  <h3>Inicio</h3> -->
+        <ul class="nav-main side-menu">
+            
+            <li id="li-sidebar-left-home">
+                <a class="{% if request.resolver_match.namespace == 'administrador'%}active{% endif %}" data-toggle="nav-submenu" href="{% url 'administrador:inicio' %}"><i class="si si-home"></i><span class="sidebar-mini-hide">Inicio</span></a>
+            </li> 
+            <li id="li-sidebar-left-tratamiento">
+                <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="fa fa-medkit"></i><span class="sidebar-mini-hide">Tratamientos</span></a>
+                <ul class="nav child_menu">
+                    <li>
+                        <a  href="{% url 'tratamiento:crear' %}" id="crear-tratamiento">Registrar Tratamiento</a>
+                    </li>
+                    <li>
+                        <a  href="{% url 'tratamiento:listar' %}" id="listar-tratamiento">Listar Tratamientos</a>
+                    </li>
+                </ul>
+            </li>
+            <li id="li-sidebar-left-cita">
+                <a class="nav-submenu {% if request.resolver_match.namespace == 'cita' %}active{% endif %}" data-toggle="nav-submenu" href="#"><i class="si si-pin"></i><span class="sidebar-mini-hide">Citas</span></a>
+                <ul>
+                    <li>
+                        <a  href="{% url 'cita:crear' %}" id="crear-cita">Registrar Cita</a>
+                    </li>
+                    <li>
+                        <a  href="{% url 'cita:listar' %}" id="listar-cita">Listar Citas</a>
+                    </li>
+                </ul>
+            </li>
+            <li id="li-sidebar-left-paciente">
+                <a class="nav-submenu {% if request.resolver_match.namespace == 'paciente' %}active{% endif %}" data-toggle="nav-submenu" href="#"><i class="fa fa-user-plus"></i><span class="sidebar-mini-hide">Paciente</span></a>
+                <ul>
+                    <li>
+                        <a href="{% url 'paciente:crear' %}" id="crear-paciente">Registrar Nuevo Paciente</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'paciente:listar' %}" id="listar-paciente">Listar Pacientes</a>
+                    </li>
+                </ul>
+            </li>
+            <li id="li-sidebar-left-historiaClinicaPaciente">
+                <a class="nav-submenu {% if request.resolver_match.namespace == 'historiaClinicaPaciente' %}active{% endif %}" data-toggle="nav-submenu" href="#"><i class="fa fa-list-alt"></i><span class="sidebar-mini-hide">Historia Clínica</span></a>
+                <ul>
+                
+                <li id="li-sidebar-left-historiaClinica">
+                <a class="nav-submenu {% if request.resolver_match.namespace == 'historiaClinica' %}active{% endif %}" data-toggle="nav-submenu" href="#"><i class="fa fa-list-alt"></i><span class="sidebar-mini-hide">Historia Clínica del Paciente</span></a>
+                <ul>
+                    <li>
+                        <a href="{% url 'historiaClinica:crear' %}" id="crear-historiaClinica">Registrar Historia Clínica del Paciente</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'historiaClinica:listar' %}" id="listar-historiaClinica">Listar Historia Clínica del paciente</a>
+                    </li>
+                    </ul>
+                </li>
+                <li id="li-sidebar-left-antecedentesFamiliares">
+                    <a class="nav-submenu {% if request.resolver_match.namespace == 'antecedentesFamiliares' %}active{% endif %}" data-toggle="nav-submenu" href="#"><i class="fa fa-users"></i><span class="sidebar-mini-hide">Antecedentes Familiares del Paciente</span></a>
+                    <ul>
+                        <li>
+                            <a href="{% url 'antecedentesFamiliares:crear' %}" id="listar-antecedentesFamiliares">Registrar Antecedentes familiares</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'antecedentesFamiliares:listar' %}" id="listar-antecedentesFamiliares">Listar Antecedentes Familiares</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="li-sidebar-left-antecedentesPersonales">
+                    <a class="nav-submenu {% if request.resolver_match.namespace == 'antecedentesPersonales' %}active{% endif %}" data-toggle="nav-submenu" href="#"><i class="fa fa-list-ul"></i><span class="sidebar-mini-hide">Antecedentes Personales del Paciente</span></a>
+                    <ul>
+                        <li>
+                            <a href="{% url 'antecedentesPersonales:crear' %}" id="listar-antecedentesPersonales">Registrar Antecedentes Personales</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'antecedentesPersonales:listar' %}" id="listar-antecedentesPersonales">Listar Antecedentes Personales</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="li-sidebar-left-interconsulta">
+                    <a class="nav-submenu {% if request.resolver_match.namespace == 'interconsulta' %}active{% endif %}" data-toggle="nav-submenu" href="#"><i class="fa fa-list-ul"></i><span class="sidebar-mini-hide">Interconsulta</span></a>
+                    <ul>
+                        <li>
+                            <a href="{% url 'interconsulta:crear' %}" id="listar-interconsulta">Registrar Interconsulta</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'interconsulta:listar' %}" id="listar-interconsulta">Listar Interconsulta</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="li-sidebar-left-consentimiento">
+                    <a class="nav-submenu {% if request.resolver_match.namespace == 'consentimiento' %}active{% endif %}" data-toggle="nav-submenu" href="#"><i class="fa fa-list-ul"></i><span class="sidebar-mini-hide">Consentimiento Bajo Información</span></a>
+                    <ul>
+                        <li>
+                            <a >Registrar Consentimiento Bajo Información</a>
+                        </li>
+                        <li>
+                            <a  >Listar Consentimiento Bajo Información</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <li id="li-sidebar-left-receta">
+                    <a class="nav-submenu {% if request.resolver_match.namespace == 'receta' %}active{% endif %}" data-toggle="nav-submenu" href="#"><i class="fa fa-list-ul"></i><span class="sidebar-mini-hide">Receta</span></a>
+                    <ul>
+                        <li>
+                            <a href="{% url 'receta:crear' %}" id="listar-receta">Expedir Receta</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'receta:listar' %}" id="listar-receta">Listar Recetas expedidas</a>
+                        </li>
+                    </ul>
+                </li>
+    </div>
+</div>
+<!-- END Side Content -->
