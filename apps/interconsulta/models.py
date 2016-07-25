@@ -18,4 +18,7 @@ class Interconsulta(models.Model):
     criterio= models.TextField(max_length=500, null=True, blank=True)
     tratamiento =models.ForeignKey(Tratamiento, null=True, blank=True)
     activo = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return u'{0}'.format(self.persona_responsable)
     

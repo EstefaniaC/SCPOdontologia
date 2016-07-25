@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'^receta/', include('apps.receta.urls', namespace="receta")),
     url(r'^antecedentesPersonales/', include('apps.antecedentespersonales.urls', namespace="antecedentesPersonales")),
     url(r'^interconsulta/', include('apps.interconsulta.urls', namespace="interconsulta")),
+    url(r'^consentimiento/', include('apps.consentimiento.urls', namespace="consentimiento")),
 
 ]

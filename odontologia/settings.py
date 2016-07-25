@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'apps.receta',
     'apps.antecedentespersonales',
     'apps.interconsulta',
+    'apps.consentimiento',
 )
 
 MIDDLEWARE_CLASSES = (

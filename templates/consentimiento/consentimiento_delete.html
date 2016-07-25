@@ -1,0 +1,50 @@
+{% extends "base/base.html" %}
+{% block extrastatic %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'assets/js/plugins/datatables/jquery.dataTables.min.css' %}">
+
+{% endblock %}
+{% block pageheader %}
+    Eliminar
+{% endblock %}
+{% block subpageheader %}
+    Interconsulta
+{% endblock %}
+{% block breadcrumbs %}
+     <div class="col-sm-5 text-right hidden-xs" xmlns="http://www.w3.org/1999/html">
+                                <ol class="breadcrumb push-10-t">
+
+                                    <li><a class="link-effect" href="{% url 'index' %}">Inicio</a></li>
+                                    <li><a class="link-effect" href="{% url 'consentimiento:listar' %}">Consentimiento Bajo Información</a></li>
+                                    <li><a class="link-effect" href="">Eliminar</a></li>
+
+                                </ol>
+                            </div>
+{% endblock breadcrumbs %}
+{% block content %}
+                        <div class="block-content">
+                            <form class="form-horizontal form-label-left" method="POST">
+                                {% csrf_token %}
+                                <h1>¿Está seguro de eliminar el registro?</h1>
+                                <input type="submit" value="Eliminar" class="btn btn-danger" />
+                                <a type="submit" class="btn btn-info" href="{% url 'consentimiento:listar' %}">Cancelar</a>
+                            </form>
+                        </div>
+                    <!--END Page Content -->
+{% endblock %}
+{% block extrajs %}
+    {% load staticfiles %}
+    <script src="{% static 'assets/js/csfr.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'instalacion/js/instalacion_datatable.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/datatables/fnReloadAjax.js' %}"></script>
+    <script>
+     $(document).on('ready',function(){
+        "use strict";
+
+    });
+
+    </script>
+
+{% endblock %}

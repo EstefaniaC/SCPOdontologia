@@ -146,10 +146,10 @@
                     <a class="nav-submenu {% if request.resolver_match.namespace == 'consentimiento' %}active{% endif %}" data-toggle="nav-submenu" href="#"><i class="fa fa-list-ul"></i><span class="sidebar-mini-hide">Consentimiento Bajo Información</span></a>
                     <ul>
                         <li>
-                            <a >Registrar Consentimiento Bajo Información</a>
+                            <a href="{% url 'consentimiento:crear' %}" id="crear-consentimiento">Registrar Consentimiento Bajo Información</a>
                         </li>
                         <li>
-                            <a  >Listar Consentimiento Bajo Información</a>
+                            <a href="{% url 'consentimiento:listar' %}" id="crear-consentimiento">Listar Consentimiento Bajo Información</a>
                         </li>
                     </ul>
                 </li>
