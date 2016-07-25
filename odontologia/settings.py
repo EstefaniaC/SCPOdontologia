@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'odontologia.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'odontologia',
+        'NAME': 'SCPOdontologia',
         'USER': 'postgres',
         'PASSWORD': 'estefanii91',
         'HOST': 'localhost',
