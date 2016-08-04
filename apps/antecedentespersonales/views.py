@@ -10,6 +10,7 @@ from apps.antecedentespersonales.forms import AntecedentesPersonalesForm
 
 class AntecedentesPersonalesList(ListView):
     model = AntecedentesPersonales
+    paginate_by = 25
     template_name = "antecedentesPersonales/antecedentesPersonales_list.html"
 
     def get_queryset(self):

@@ -11,6 +11,7 @@ from apps.cita.forms import CitaForm
 
 class CitaList(ListView):
     model = Cita
+    paginate_by = 25
     template_name = "cita/cita_list.html"
 
     def get_queryset(self):

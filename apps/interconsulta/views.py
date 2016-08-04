@@ -10,6 +10,7 @@ from apps.interconsulta.forms import InterconsultaForm
 
 class InterconsultaList(ListView):
     model = Interconsulta
+    paginate_by = 25
     template_name = "interconsulta/interconsulta_list.html"
 
     def get_queryset(self):

@@ -7,20 +7,19 @@
     <link rel="stylesheet" href="{% static 'assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css' %}">
 {% endblock %}
 {% block pageheader %}
-Paciente
+    Paciente
 {% endblock %}
 {% block subpageheader %}
 {% if request.get_full_path == "/paciente/nuevo" %}
-Crear
+    Crear
 {% else %}
-Editar
+    Editar
 {% endif %}
 {% endblock %}
  {% block breadcrumbs %}
      <div class="col-sm-5 text-right hidden-xs" xmlns="http://www.w3.org/1999/html">
                                 <ol class="breadcrumb push-10-t">
-
-                                    <li><a class="link-effect" href="{% url 'index' %}">Inicio</a></li>
+                                    <li><a class="link-effect" href="{% url 'administrador:inicio' %}">Inicio</a></li>
                                     <li><a class="link-effect" href="{% url 'paciente:listar' %}">Pacientes</a></li>
                                     <li><a class="link-effect" href="">
                                        {% if request.get_full_path == "/paciente/nuevo" %}

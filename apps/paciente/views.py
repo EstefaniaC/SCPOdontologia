@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, FormView
-
+from django.contrib.auth.decorators import login_required
 from apps.paciente.models import Paciente
 from apps.paciente.forms import PacienteForm
 
@@ -11,6 +11,7 @@ from apps.paciente.forms import PacienteForm
 
 class PacienteList(ListView):
     model = Paciente
+    paginate_by = 25
     template_name = "paciente/paciente_list.html"
 
     def get_queryset(self):

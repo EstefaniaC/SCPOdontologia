@@ -10,6 +10,7 @@ from apps.receta.forms import RecetaForm
 
 class RecetaList(ListView):
     model = Receta
+    paginate_by = 25
     template_name = "receta/receta_list.html"
 
     def get_queryset(self):

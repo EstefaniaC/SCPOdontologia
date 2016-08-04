@@ -10,6 +10,7 @@ from apps.consentimiento.forms import ConsentimientoForm
 
 class ConsentimientoList(ListView):
     model = Consentimiento
+    paginate_by = 25
     template_name = "consentimiento/consentimiento_list.html"
 
     def get_queryset(self):

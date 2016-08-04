@@ -11,6 +11,7 @@ from apps.historiaclinica.forms import HistoriaClinicaForm
 
 class HistoriaClinicaList(ListView):
     model = HistoriaClinica
+    paginate_by = 25
     template_name = "historiaClinica/historiaClinica_list.html"
 
     def get_queryset(self):

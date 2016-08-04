@@ -20,7 +20,7 @@
      <div class="col-sm-5 text-right hidden-xs" xmlns="http://www.w3.org/1999/html">
                                 <ol class="breadcrumb push-10-t">
 
-                                    <li><a class="link-effect" href="{% url 'index' %}">Inicio</a></li>
+                                    <li><a class="link-effect" href="{% url 'administrador:inicio' %}">Inicio</a></li>
                                     <li><a class="link-effect" href="{% url 'consentimiento:listar' %}">Consentimiento Bajo Información</a></li>
                                     <li><a class="link-effect" href="">
                                        {% if request.get_full_path == "/consentimiento/nuevo" %}
