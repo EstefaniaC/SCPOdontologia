@@ -8,11 +8,12 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
-                                <li class="dropdown-header">Menú</li>
+                                <li class="dropdown-header">{{user.username|capfirst}}
+                                    <span class="fa fa-user"></span>
+                                </li>
                                 <li>
                                     <a tabindex="-1" href="{% url 'logout' %}">
-                                        <i class="fa fa-sign-out pull-right" ></i>
-                                        <span class="fa fa-user"></span>      Cerrar Sesión
+                                        <i class="fa fa-sign-out pull-right" ></i>Cerrar Sesión
                                     </a>
                                 </li>
                             </ul>
